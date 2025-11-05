@@ -100,7 +100,7 @@ Ce problème d'optimisation classique consiste à choisir des objets ayant un po
 
 **La stratégie de la Programmation Dynamique** construit une table des solutions optimales pour toutes les combinaisons de poids et d'ensembles d'objets intermédiaires.
 
-Comme vous pouvez le voir sur ce schéma, nous avons plusieurs objets avec leurs poids et valeurs. La Programmation Dynamique permet de trouver la combinaison optimale, ici les objets A et C, qui maximise la valeur tout en respectant la contrainte de poids.
+Comme vous pouvez le voir sur ce schéma, nous avons plusieurs objets avec leurs poids et valeurs. La Programmation Dynamique permet de trouver la combinaison optimale, ici les objets A, C et D, qui maximise la valeur tout en respectant la contrainte de poids. Avec cette combinaison, nous obtenons un poids total de 10kg (la capacité maximale) et une valeur totale de 48€.
 
 **Formulation mathématique** : 
 
