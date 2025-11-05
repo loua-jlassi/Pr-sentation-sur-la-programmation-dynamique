@@ -62,7 +62,19 @@ Comment fonctionne la Programmation Dynamique ? Elle suit un processus structur�
 
 **Cinquième étape : Reconstruction de la Solution**. À partir des résultats stockés, on retrouve la séquence optimale qui a mené à la solution.
 
-Au cœur de cette méthode se trouve l'**Équation de Bellman**, également appelée relation de récurrence. Elle lie la valeur actuelle à la valeur future optimale. La formule générale est : V(s) = max sur a de [R(s,a) + γV(s')], où V(s) représente la valeur de l'état s, R(s,a) est la récompense, γ est le facteur d'escompte, et s' est l'état suivant.
+Au cœur de cette méthode se trouve l'**Équation de Bellman**, également appelée relation de récurrence. Elle lie la valeur actuelle à la valeur future optimale.
+
+La formule générale est : **V(s) = max sur a de [R(s,a) + γV(s')]**
+
+Laissez-moi vous expliquer chaque élément de cette formule :
+
+- **V(s)** représente la valeur optimale de l'état actuel s. C'est ce que nous cherchons à calculer.
+- **max sur a** signifie que nous cherchons la meilleure action parmi toutes les actions possibles.
+- **R(s,a)** est la récompense immédiate obtenue en étant dans l'état s et en choisissant l'action a.
+- **γ** (gamma) est le facteur d'escompte, un nombre entre 0 et 1 qui permet de pondérer les récompenses futures. Plus γ est proche de 1, plus on valorise les récompenses futures. Plus il est proche de 0, plus on se concentre sur les récompenses immédiates.
+- **V(s')** représente la valeur optimale de l'état suivant s' que nous atteignons après avoir pris l'action a.
+
+Cette équation exprime donc que la valeur optimale d'un état est égale à la meilleure récompense immédiate plus la valeur optimale future, pondérée par le facteur d'escompte.
 
 ---
 
@@ -90,9 +102,39 @@ Ce problème d'optimisation classique consiste à choisir des objets ayant un po
 
 Comme vous pouvez le voir sur ce schéma, nous avons plusieurs objets avec leurs poids et valeurs. La Programmation Dynamique permet de trouver la combinaison optimale, ici les objets A et C, qui maximise la valeur tout en respectant la contrainte de poids.
 
-**Formulation mathématique** : On cherche à maximiser la somme des valeurs multipliées par les variables de décision, sous la contrainte que la somme des poids ne dépasse pas la capacité W. Chaque objet peut être pris ou non, ce qui se traduit par des variables binaires.
+**Formulation mathématique** : 
 
-La **relation de récurrence** utilisée est : dp[i][w] = max entre prendre l'objet i ou ne pas le prendre, ce qui donne : max de dp[i-1][w] et dp[i-1][w-wi] + vi, où dp[i][w] représente la valeur maximale avec les i premiers objets et une capacité w.
+Le problème du sac à dos se formule mathématiquement comme suit :
+
+Nous cherchons à **maximiser** : **Σ(vᵢ × xᵢ)** 
+
+Cela signifie la somme de toutes les valeurs vᵢ multipliées par xᵢ, où :
+- **vᵢ** représente la valeur de l'objet numéro i
+- **xᵢ** est une variable binaire qui vaut 1 si l'objet i est pris, et 0 s'il n'est pas pris
+
+**Sous la contrainte** : **Σ(wᵢ × xᵢ) ≤ W**
+
+Cela signifie que la somme de tous les poids wᵢ multipliés par xᵢ ne doit pas dépasser la capacité maximale W du sac, où :
+- **wᵢ** représente le poids de l'objet numéro i
+- **W** est la capacité maximale du sac à dos
+
+Et **xᵢ ∈ {0, 1}** signifie que chaque objet peut être soit pris (1), soit non pris (0).
+
+La **relation de récurrence** utilisée pour résoudre ce problème est :
+
+**dp[i][w] = max(dp[i-1][w], dp[i-1][w-wᵢ] + vᵢ)**
+
+Laissez-moi vous expliquer cette formule en détail :
+
+- **dp[i][w]** représente la valeur maximale que nous pouvons obtenir en utilisant les i premiers objets avec une capacité de poids égale à w.
+
+- Le premier terme **dp[i-1][w]** représente le cas où nous ne prenons pas l'objet i. Dans ce cas, la valeur maximale reste la même que celle obtenue avec les i-1 premiers objets et la même capacité w.
+
+- Le deuxième terme **dp[i-1][w-wᵢ] + vᵢ]** représente le cas où nous prenons l'objet i. Dans ce cas, nous ajoutons la valeur vᵢ de l'objet, mais nous devons utiliser une capacité w-wᵢ (la capacité restante après avoir pris l'objet i) avec les i-1 premiers objets.
+
+- Le **max** entre ces deux options nous donne la meilleure décision : prendre ou ne pas prendre l'objet i pour obtenir la valeur maximale.
+
+Cette formule se construit de manière itérative, en commençant par les cas de base (sacs vides ou sans objets) et en construisant progressivement vers la solution optimale.
 
 **L'efficacité** de cette méthode évite de tester les milliers de combinaisons possibles, garantissant la solution optimale de manière polynomiale.
 
@@ -152,13 +194,13 @@ Il est important de bien comprendre quand utiliser cette méthode et quand préf
 
 ## SLIDE 12 : Comparaison de Performance
 
-Ce graphique compare la complexité temporelle entre la méthode naïve et la Programmation Dynamique pour le calcul de la suite de Fibonacci.
+Ce graphique compare l'efficacité entre la méthode naïve et la Programmation Dynamique de manière générale, pour n'importe quel problème résolu par ces deux approches.
 
-La courbe rouge montre l'explosion exponentielle du temps avec la méthode naïve, qui a une complexité de O(2ⁿ). Vous pouvez voir que même pour des valeurs relativement petites de n, le temps d'exécution devient rapidement prohibitif.
+La courbe rouge montre l'augmentation rapide du temps avec la méthode naïve. Cette méthode calcule les mêmes sous-problèmes plusieurs fois, ce qui conduit à une croissance exponentielle du temps d'exécution. Vous pouvez voir que même pour des valeurs relativement petites de la taille du problème n, le temps d'exécution devient rapidement prohibitif.
 
-En revanche, la courbe verte illustre l'efficacité linéaire de la Programmation Dynamique, qui a une complexité de O(n). Cette différence est spectaculaire : pour n égal à 30, on obtient un gain de performance d'environ un milliard de fois.
+En revanche, la courbe verte illustre l'efficacité de la Programmation Dynamique. Cette méthode évite les recalculs en mémorisant les résultats des sous-problèmes déjà résolus, ce qui conduit à une croissance beaucoup plus lente, quasi-linéaire, du temps d'exécution. Cette différence est spectaculaire : pour des problèmes de taille moyenne, on peut obtenir un gain de performance de plusieurs ordres de grandeur.
 
-Cette visualisation montre clairement pourquoi la Programmation Dynamique est si importante pour l'optimisation des algorithmes.
+Cette visualisation montre clairement pourquoi la Programmation Dynamique est si importante pour l'optimisation des algorithmes et pourquoi elle est largement utilisée dans l'industrie.
 
 ---
 
