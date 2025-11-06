@@ -44,6 +44,21 @@
             animation: slideInUp 1s ease-out forwards;
             overflow: hidden;
         }
+
+        /* Numérotation des pages */
+        .page-number {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            font-size: 1rem;
+            color: #64748b;
+            font-weight: 500;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
         
         .slide::before {
             content: '';
@@ -1723,7 +1738,28 @@
             </div>
         </div>
 
-        <!-- Slide 13: Remerciements -->
+        <!-- Slide 13: Références -->
+        <div class="slide">
+            <h2>Références</h2>
+            <div style="max-height: calc(100vh - 150px); overflow-y: auto; padding-right: 10px;">
+                <div class="highlight-box" style="margin-bottom: 20px;">
+                    <h4>Références Utilisées</h4>
+                    <ul style="font-size: 0.9rem; line-height: 1.8; margin-left: 20px;">
+                        <li style="margin-bottom: 12px;">
+                            <strong>Bellman, R.</strong> (1957). <em>Programmation Dynamique</em>. Princeton University Press.
+                        </li>
+                        <li style="margin-bottom: 12px;">
+                            <strong>Levenshtein, V. I.</strong> (1966). Codes binaires capables de corriger les suppressions, insertions et inversions. <em>Soviet Physics Doklady</em>, 10(8), 707-710.
+                        </li>
+                        <li style="margin-bottom: 12px;">
+                            <strong>Smith, T. F., & Waterman, M. S.</strong> (1981). Identification de sous-séquences moléculaires communes. <em>Journal of Molecular Biology</em>, 147(1), 195-197.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Remerciements -->
         <div class="slide">
             <div class="footer">
                 <h3>Merci pour votre attention !</h3>
@@ -1837,6 +1873,24 @@
                 const originalText = heroTitle.textContent;
                 typeWriter(heroTitle, originalText, 150);
             }
+            
+            // Ajouter le numéro de page sur chaque slide
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            slides.forEach((slide, index) => {
+                // Vérifier si le numéro de page existe déjà
+                let pageNumberElement = slide.querySelector('.page-number');
+                if (!pageNumberElement) {
+                    // Créer l'élément de numéro de page
+                    pageNumberElement = document.createElement('div');
+                    pageNumberElement.className = 'page-number';
+                    pageNumberElement.textContent = `${index + 1} / ${totalSlides}`;
+                    slide.appendChild(pageNumberElement);
+                } else {
+                    // Mettre à jour le numéro existant
+                    pageNumberElement.textContent = `${index + 1} / ${totalSlides}`;
+                }
+            });
         });
 
         // Effets de particules interactives

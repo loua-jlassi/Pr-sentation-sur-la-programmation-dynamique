@@ -16,7 +16,7 @@ Aujourd'hui, je vais vous présenter un sujet fondamental en théorie de la déc
 
 ## SLIDE 2 : Plan de la Présentation
 
-Avant de commencer, voici le plan de ma présentation. Nous allons d'abord introduire le concept de Programmation Dynamique, puis explorer son architecture et ses étapes. Nous verrons ensuite les deux approches stratégiques de calcul, suivies d'un exemple concret : le problème du sac à dos. Nous examinerons les applications industrielles et modernes, discuterons des avantages et limites, et terminerons par une conclusion.
+Avant de commencer, voici le plan de ma présentation. Nous allons d'abord introduire le concept de Programmation Dynamique, puis explorer son architecture et ses étapes. Nous verrons ensuite les deux approches stratégiques de calcul, suivies de deux exemples concrets : le problème du sac à dos et le problème du plus court chemin. Nous examinerons les applications industrielles et modernes, discuterons des avantages et limites, et terminerons par une conclusion.
 
 ---
 
@@ -100,47 +100,75 @@ Ce problème d'optimisation classique consiste à choisir des objets ayant un po
 
 **La stratégie de la Programmation Dynamique** construit une table des solutions optimales pour toutes les combinaisons de poids et d'ensembles d'objets intermédiaires.
 
-Comme vous pouvez le voir sur ce schéma, nous avons plusieurs objets avec leurs poids et valeurs. La Programmation Dynamique permet de trouver la combinaison optimale, ici les objets A, C et D, qui maximise la valeur tout en respectant la contrainte de poids. Avec cette combinaison, nous obtenons un poids total de 10kg (la capacité maximale) et une valeur totale de 48€.
+Regardons maintenant le schéma. À gauche, nous voyons le sac à dos vide avec une capacité de 10 kilogrammes. Au centre, nous avons les quatre objets disponibles : A, B, C et D. Chaque objet a un poids et une valeur. Par exemple, l'objet A pèse 3 kilogrammes et vaut 15 euros. L'objet B pèse 4 kilogrammes et vaut 20 euros. L'objet C pèse 2 kilogrammes et vaut 8 euros. Et l'objet D pèse 5 kilogrammes et vaut 25 euros.
 
-**Formulation mathématique** : 
+La question est : quels objets devons-nous mettre dans le sac pour obtenir la plus grande valeur totale, sans dépasser les 10 kilogrammes ?
 
-Le problème du sac à dos se formule mathématiquement comme suit :
-
-Nous cherchons à **maximiser** : **Σ(vᵢ × xᵢ)** 
-
-Cela signifie la somme de toutes les valeurs vᵢ multipliées par xᵢ, où :
-- **vᵢ** représente la valeur de l'objet numéro i
-- **xᵢ** est une variable binaire qui vaut 1 si l'objet i est pris, et 0 s'il n'est pas pris
-
-**Sous la contrainte** : **Σ(wᵢ × xᵢ) ≤ W**
-
-Cela signifie que la somme de tous les poids wᵢ multipliés par xᵢ ne doit pas dépasser la capacité maximale W du sac, où :
-- **wᵢ** représente le poids de l'objet numéro i
-- **W** est la capacité maximale du sac à dos
-
-Et **xᵢ ∈ {0, 1}** signifie que chaque objet peut être soit pris (1), soit non pris (0).
-
-La **relation de récurrence** utilisée pour résoudre ce problème est :
-
-**dp[i][w] = max(dp[i-1][w], dp[i-1][w-wᵢ] + vᵢ)**
-
-Laissez-moi vous expliquer cette formule en détail :
-
-- **dp[i][w]** représente la valeur maximale que nous pouvons obtenir en utilisant les i premiers objets avec une capacité de poids égale à w.
-
-- Le premier terme **dp[i-1][w]** représente le cas où nous ne prenons pas l'objet i. Dans ce cas, la valeur maximale reste la même que celle obtenue avec les i-1 premiers objets et la même capacité w.
-
-- Le deuxième terme **dp[i-1][w-wᵢ] + vᵢ]** représente le cas où nous prenons l'objet i. Dans ce cas, nous ajoutons la valeur vᵢ de l'objet, mais nous devons utiliser une capacité w-wᵢ (la capacité restante après avoir pris l'objet i) avec les i-1 premiers objets.
-
-- Le **max** entre ces deux options nous donne la meilleure décision : prendre ou ne pas prendre l'objet i pour obtenir la valeur maximale.
-
-Cette formule se construit de manière itérative, en commençant par les cas de base (sacs vides ou sans objets) et en construisant progressivement vers la solution optimale.
-
-**L'efficacité** de cette méthode évite de tester les milliers de combinaisons possibles, garantissant la solution optimale de manière polynomiale.
+La Programmation Dynamique trouve la meilleure solution : prendre les objets A, C et D. Avec cette combinaison, nous obtenons exactement 10 kilogrammes (3 + 2 + 5) et une valeur totale de 48 euros (15 + 8 + 25). C'est la solution optimale !
 
 ---
 
-## SLIDE 9 : Applications Industrielles Réelles
+## SLIDE 9 : Le Problème du Plus Court Chemin
+
+Passons maintenant à un deuxième exemple concret : le problème du plus court chemin.
+
+Ce problème consiste à trouver le chemin le plus court entre deux nœuds dans un graphe pondéré, où chaque arête a un coût ou une distance associée.
+
+**L'objectif** est de minimiser la distance totale ou le coût pour aller d'un point de départ à un point d'arrivée dans un réseau.
+
+**La stratégie de la Programmation Dynamique** utilise l'algorithme de Floyd-Warshall qui calcule les plus courts chemins entre toutes les paires de nœuds en utilisant la programmation dynamique.
+
+Regardons maintenant le schéma. Nous avons un graphe avec quatre nœuds : A, B, C et D. Le nœud A est notre point de départ et le nœud D est notre point d'arrivée. Chaque arête a un poids associé : de A à B, la distance est de 4 ; de A à C, la distance est de 2 ; de B à D, la distance est de 5 ; et de C à D, la distance est de 3.
+
+La question est : quel est le chemin le plus court pour aller de A à D ?
+
+La Programmation Dynamique trouve la meilleure solution : passer par C, c'est-à-dire le chemin A → C → D. Regardez les flèches vertes qui montrent ce chemin optimal. Avec cette combinaison, nous obtenons une distance totale de 5 (2 + 3), ce qui est plus court que le chemin A → B → D qui aurait une distance de 9 (4 + 5).
+
+**La relation de récurrence** utilisée pour résoudre ce problème avec l'algorithme de Floyd-Warshall est :
+
+**dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])**
+
+Laissez-moi vous expliquer cette formule :
+
+- **dist[i][j]** représente la distance la plus courte entre les nœuds i et j.
+- **k** est un nœud intermédiaire qui permet de trouver un chemin plus court entre i et j.
+- La formule compare la distance directe entre i et j avec la distance en passant par le nœud intermédiaire k, et choisit la plus petite.
+
+Cette formule se construit de manière itérative, en testant tous les nœuds intermédiaires possibles, garantissant ainsi de trouver le chemin le plus court.
+
+**L'efficacité** de cette méthode permet de résoudre le problème pour toutes les paires de nœuds en une seule fois, ce qui est très utile pour les applications de navigation GPS ou de routage réseau.
+
+---
+
+## SLIDE 9b : Démarche - Tester Tous les Chemins
+
+Maintenant, expliquons la démarche en testant tous les chemins possibles.
+
+**Principe**
+
+La Programmation Dynamique teste tous les chemins possibles de A vers D et garde le plus court.
+
+Regardons le schéma. Il montre le graphe complet avec tous les nœuds et leurs connexions.
+
+**Test de tous les chemins :**
+
+**Premier chemin : A → B → D**
+
+On peut aller de A à B avec une distance de 4, puis de B à D avec une distance de 5. Le chemin total A→B→D a une distance de 4 + 5 = 9.
+
+**Deuxième chemin : A → C → D**
+
+On peut aller de A à C avec une distance de 2, puis de C à D avec une distance de 3. Le chemin total A→C→D a une distance de 2 + 3 = 5.
+
+**Conclusion : Le Plus Court Chemin**
+
+Après avoir testé tous les chemins possibles, on constate que le chemin A→C→D avec une distance de 5 est le plus court, comparé au chemin A→B→D qui fait 9.
+
+La Programmation Dynamique a donc trouvé le chemin optimal en testant systématiquement tous les chemins possibles et en gardant le plus court.
+
+---
+
+## SLIDE 10 : Applications Industrielles Réelles
 
 La Programmation Dynamique est utilisée par les plus grandes entreprises technologiques.
 
@@ -152,7 +180,7 @@ Ces exemples montrent l'impact concret de la Programmation Dynamique dans notre 
 
 ---
 
-## SLIDE 10 : Autres Applications Courantes et Avancées
+## SLIDE 11 : Autres Applications Courantes et Avancées
 
 La Programmation Dynamique est un pilier dans divers domaines de la décision opérationnelle et stratégique.
 
@@ -170,7 +198,7 @@ Ces applications montrent l'universalité et la puissance de cette méthode.
 
 ---
 
-## SLIDE 11 : Avantages et Limites
+## SLIDE 13 : Avantages et Limites
 
 Comme toute méthode, la Programmation Dynamique présente des avantages et des limites.
 
@@ -204,7 +232,7 @@ Cette visualisation montre clairement pourquoi la Programmation Dynamique est si
 
 ---
 
-## SLIDE 13 : Conclusion
+## SLIDE 14 : Conclusion
 
 Pour conclure, retenons quelques points clés :
 
@@ -216,11 +244,21 @@ Pour conclure, retenons quelques points clés :
 
 **Enfin**, elle garantit des solutions optimales de manière efficace, ce qui en fait un outil indispensable en théorie de la décision.
 
-En ce qui concerne les **perspectives d'avenir**, la Programmation Dynamique continue d'évoluer avec l'intelligence artificielle et le machine learning, ouvrant de nouvelles possibilités d'optimisation. Elle reste un domaine de recherche actif avec de nombreuses applications émergentes.
+---
+
+## SLIDE 15 : Références
+
+Pour conclure cette présentation, je voudrais vous présenter les références qui ont été utilisées dans cette présentation.
+
+**Premièrement**, le livre fondateur de Richard Bellman, "Programmation Dynamique", publié en 1957, qui est la référence historique de cette méthode que nous avons mentionnée dans la partie historique.
+
+**Deuxièmement**, l'article de Levenshtein de 1966 sur les codes binaires capables de corriger les suppressions, insertions et inversions, qui est à la base de l'algorithme de distance de Levenshtein que nous avons présenté dans l'exemple d'application de Google.
+
+**Enfin**, l'article de Smith et Waterman de 1981 sur l'identification de sous-séquences moléculaires communes, que nous avons mentionné dans les applications en bio-informatique.
 
 ---
 
-## SLIDE 14 : Remerciements
+## SLIDE 16 : Remerciements
 
 Je vous remercie pour votre attention.
 
